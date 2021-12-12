@@ -10,18 +10,42 @@ def get_commands() -> Iterator[str]:
             yield line.strip()
 
 
-pos, depth = 0, 0
+def part_1():
+    pos, depth = 0, 0
 
-for command in get_commands():
-    direction, amount = command.split(' ')
-    amount = int(amount)
+    for command in get_commands():
+        direction, amount = command.split(' ')
+        amount = int(amount)
 
-    match direction:
-        case "forward":
-            pos += amount
-        case "down":
-            depth += amount
-        case "up":
-            depth -= amount
+        match direction:
+            case "forward":
+                pos += amount
+            case "down":
+                depth += amount
+            case "up":
+                depth -= amount
 
-print(pos * depth)
+    return pos * depth
+
+
+def part_2():
+    pos, depth, aim = 0, 0, 0
+
+    for command in get_commands():
+        direction, amount = command.split(' ')
+        amount = int(amount)
+
+        match direction:
+            case "forward":
+                pos += amount
+                depth += aim * amount
+            case "down":
+                aim += amount
+            case "up":
+                aim -= amount
+
+    return pos * depth
+
+
+print(part_1())
+print(part_2())
