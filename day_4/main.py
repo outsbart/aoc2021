@@ -46,17 +46,34 @@ def get_score(board: Board, drawn_numbers: set, last_drawn: int) -> int:
     return somma * last_drawn
 
 
-boards, extractions = load_boards_and_extractions()
+def part_1():
+    boards, extractions = load_boards_and_extractions()
 
-drawn: set = set()
+    drawn: set = set()
 
-for number in extractions:
-    drawn.add(number)
+    for number in extractions:
+        drawn.add(number)
 
-    print("Extracted numbers: ", drawn)
+        winner = next((board for board in boards if has_won(board, drawn_numbers=drawn)), None)
 
-    winner = next((board for board in boards if has_won(board, drawn_numbers=drawn)), None)
+        if winner is not None:
+            return get_score(winner, drawn, number)
 
-    if winner is not None:
-        print(get_score(winner, drawn, number))
-        break
+
+def part_2():
+    boards_still_playing, extractions = load_boards_and_extractions()
+
+    drawn: set = set()
+
+    for number in extractions:
+        drawn.add(number)
+
+        old_boards = boards_still_playing
+        boards_still_playing = list(board for board in boards_still_playing if not has_won(board, drawn_numbers=drawn))
+
+        if len(boards_still_playing) == 0:
+            return get_score(old_boards[0], drawn, number)
+
+
+print(part_1())
+print(part_2())
