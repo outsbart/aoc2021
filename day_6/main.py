@@ -1,3 +1,5 @@
+from collections import Counter
+
 Lanternfish = int
 Lanternfishes = list[Lanternfish]
 
@@ -42,10 +44,27 @@ def part_1():
 def part_2():
     lanternfishes: Lanternfishes = get_lanternfishes()
 
-    for _ in range(256):
-        step(lanternfishes)
+    # grouped by days left before a new fish is created
+    counter = [0] * (NEWBORN_VALUE + 1)
 
-    print(len(lanternfishes))
+    for fish in lanternfishes:
+        counter[fish] += 1
+
+    for _ in range(256):
+        # todo: Do it in-place?
+        new_counter = [0] * (NEWBORN_VALUE + 1)
+
+        for days_left, fish_count in enumerate(counter):
+            if days_left == 0:
+                new_counter[NEWBORN_VALUE] += fish_count
+                new_counter[START_VALUE] += fish_count
+            else:
+                new_counter[days_left - 1] += fish_count
+
+        counter = new_counter
+
+    print(sum(counter))
+
 
 part_1()
 part_2()
