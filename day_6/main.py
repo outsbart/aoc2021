@@ -1,5 +1,3 @@
-from collections import Counter
-
 Lanternfish = int
 Lanternfishes = list[Lanternfish]
 
